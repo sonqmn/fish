@@ -1,1 +1,6 @@
-{"source":"국립해양측위정보원 해양기상정보","status":"첫 공식 관측값을 수집하는 중입니다."}
+{
+  "source": "국립해양측위정보원 해양기상정보",
+  "updatedAt": "2026-08-06T16:29:47.880176+09:00",
+  "status": "관측값 수집 재시도 중",
+  "error": "HTTP 400: {\"result\":{\"status\":\"ERROR\",\"message\":\"serviceKey가 없습니다.\",\"recordset\":null}}"
+}
