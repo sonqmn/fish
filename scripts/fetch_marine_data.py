@@ -2,8 +2,8 @@ import json, os, urllib.parse, urllib.request, urllib.error
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 key=os.environ['MARINE_WEATHER_API_KEY']
-# 국립해양측위정보원 OPEN API 매뉴얼 기준: servicekey(소문자 k), dataType 1 또는 2
-params={'servicekey':key,'resultType':'json','mmaf':'101','mmsi':'994401578','dataType':'1'}
+# 서버 응답 기준: serviceKey(대문자 K), dataType 1 또는 2
+params={'serviceKey':key,'resultType':'json','mmaf':'101','mmsi':'994401578','dataType':'1'}
 url='http://marineweather.nmpnt.go.kr:8001/openWeatherNow.do?'+urllib.parse.urlencode(params)
 try:
   with urllib.request.urlopen(url,timeout=25) as r: raw=json.loads(r.read().decode('utf-8'))
