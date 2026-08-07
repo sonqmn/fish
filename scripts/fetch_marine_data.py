@@ -1,5 +1,7 @@
 import json
 import os
+import csv
+import io
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -43,6 +45,19 @@ def parse_xml(text):
     return records or [{root.tag.split('}')[-1]: (root.text or '').strip()}]
 
 
+def parse_delimited(text):
+    """Parse KMA API Hub CSV/TSV responses, including comment header lines."""
+    lines = [line for line in text.splitlines() if line.strip() and not line.lstrip().startswith('#')]
+    if not lines:
+        return []
+    sample = '\n'.join(lines[:5])
+    try:
+        dialect = csv.Sniffer().sniff(sample, delimiters=',\t|')
+    except csv.Error:
+        dialect = csv.excel_tab if '\t' in lines[0] else csv.excel
+    return list(csv.DictReader(io.StringIO('\n'.join(lines)), dialect=dialect))
+
+
 def number(value):
     try:
         return float(value)
@@ -56,17 +71,20 @@ try:
         body = response.read().decode('utf-8', 'replace')
         content_type = response.headers.get('Content-Type', '')
 
-    if 'json' in content_type.lower() or body.lstrip().startswith(('{', '[')):
+    stripped = body.lstrip('\ufeff \t\r\n')
+    if 'json' in content_type.lower() or stripped.startswith(('{', '[')):
         raw = json.loads(body)
         records = list(walk_records(raw))
-    else:
+    elif stripped.startswith('<'):
         records = parse_xml(body)
+    else:
+        records = parse_delimited(body)
 
-    temp_keys = ['waterTemp', 'waterTemperature', 'waterTemper', 'seaTemp', 'seaSurfaceTemp', 'wtrTmp', 'wtemp', 'sst', 'tw', 'wt']
-    station_keys = ['stationName', 'stnName', 'stnNm', 'obsName', 'obsPostName', 'mmsiNm', 'station']
-    time_keys = ['observedAt', 'obsTime', 'tm', 'datetime', 'baseDate', 'dateTime']
-    wind_keys = ['windSpeed', 'windSpd', 'ws']
-    salinity_keys = ['salinity', 'salt']
+    temp_keys = ['waterTemp', 'waterTemperature', 'waterTemper', 'seaTemp', 'seaSurfaceTemp', 'wtrTmp', 'wtemp', 'sst', 'tw', 'wt', '수온', '해수온', '해수면수온']
+    station_keys = ['stationName', 'stnName', 'stnNm', 'obsName', 'obsPostName', 'mmsiNm', 'station', '지점명', '관측지점', '지점']
+    time_keys = ['observedAt', 'obsTime', 'tm', 'datetime', 'baseDate', 'dateTime', '관측시간', '일시', '시간']
+    wind_keys = ['windSpeed', 'windSpd', 'ws', '풍속']
+    salinity_keys = ['salinity', 'salt', '염분']
 
     selected = next((record for record in records if find_in_record(record, temp_keys) is not None), None)
     if not selected:
