@@ -7,13 +7,25 @@ function goTo(page) {
   setTimeout(()=>{if(page==='alerts'&&alertsSeaMap)alertsSeaMap.invalidateSize();if(page==='report'&&reportMap)reportMap.invalidateSize();if(page==='mypage'&&farmMap)farmMap.invalidateSize();},120);
 }
 const photoInput = document.querySelector('#photo-input');
-photoInput.addEventListener('change', (event) => {
+let currentFishPhoto = null;
+photoInput.addEventListener('change', async (event) => {
   const file = event.target.files[0];
   if (!file) return;
+  currentFishPhoto = file;
   document.querySelector('#preview').src = URL.createObjectURL(file);
   document.querySelector('#upload-state').classList.add('hidden');
   document.querySelector('#result-state').classList.remove('hidden');
+  await runFishAnalysis(file);
 });
+async function runFishAnalysis(file){
+  if(!window.analyzeFishImage){toast('Gemini AI를 준비하고 있습니다. 잠시 후 다시 시도해주세요.');return;}
+  try{setAnalysisLoading();const result=await window.analyzeFishImage(file,document.querySelector('#fish-notes').value.trim());renderFishAnalysis(result);}
+  catch(error){document.querySelector('#analysis-status').textContent='분석 실패';document.querySelector('#diagnosis-level').textContent='다시 시도해주세요';document.querySelector('#diagnosis-summary').textContent=error.message||'AI 분석 중 오류가 발생했습니다.';toast('Gemini 분석에 실패했습니다. 잠시 후 다시 시도해주세요.');}
+}
+function setAnalysisLoading(){document.querySelector('#analysis-status').textContent='Gemini AI 분석 중…';document.querySelector('#diagnosis-percent').innerHTML='--<small>%</small>';document.querySelector('#diagnosis-level').textContent='분석하고 있어요';document.querySelector('#diagnosis-title').textContent='사진을 자세히 살펴보고 있습니다';document.querySelector('#diagnosis-summary').textContent='잠시만 기다려주세요.';}
+function renderFishAnalysis(data){const score=Math.max(0,Math.min(100,Number(data.suspicionScore)||0));document.querySelector('#analysis-status').textContent='Gemini AI 분석 완료';document.querySelector('#diagnosis-percent').innerHTML=`${score}<small>%</small>`;document.querySelector('#diagnosis-level').textContent=data.riskLevel||'확인 필요';document.querySelector('#diagnosis-title').textContent=`${data.species||'어종 미상'} · ${data.possibleDisease||'질병 후보 확인 필요'}`;document.querySelector('#diagnosis-summary').textContent=data.summary||'사진만으로 명확한 판단이 어렵습니다.';document.querySelector('#diagnosis-evidence').innerHTML=(data.evidence||[]).map(item=>`<li>${escapeHtml(item)}</li>`).join('')||'<li>뚜렷한 시각적 근거를 확인하지 못했습니다.</li>';document.querySelector('#diagnosis-actions').innerHTML=(data.actions||[]).map(item=>`<li>${escapeHtml(item)}</li>`).join('')||'<li>수온과 용존산소를 측정하고 전문가에게 상담하세요.</li>';document.querySelector('#diagnosis-caution').textContent=(data.caution||'AI 분석은 참고용 1차 소견이며 확진을 대신하지 않습니다.');}
+function escapeHtml(value){const div=document.createElement('div');div.textContent=String(value);return div.innerHTML;}
+async function reanalyzeFish(){if(!currentFishPhoto){toast('먼저 물고기 사진을 선택해주세요.');return;}await runFishAnalysis(currentFishPhoto);}
 function showDemoDiagnosis() {
   document.querySelector('#preview').src = 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=800&q=80';
   document.querySelector('#upload-state').classList.add('hidden');
@@ -21,6 +33,7 @@ function showDemoDiagnosis() {
 }
 function resetDiagnosis() {
   photoInput.value = '';
+  currentFishPhoto = null;
   document.querySelector('#result-state').classList.add('hidden');
   document.querySelector('#upload-state').classList.remove('hidden');
 }
