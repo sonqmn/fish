@@ -18,8 +18,7 @@ async function loadModels() {
     const generationConfig = { responseMimeType: 'application/json', temperature: 0.2 };
     return [
       getGenerativeModel(ai, { model: 'gemini-3.6-flash', ...options(generationConfig) }),
-      getGenerativeModel(ai, { model: 'gemini-2.5-flash-lite', ...options(generationConfig) }),
-      getGenerativeModel(ai, { model: 'gemini-2.5-flash', ...options(generationConfig) })
+      getGenerativeModel(ai, { model: 'gemini-3.6-flash-lite', ...options(generationConfig) })
     ];
   })();
   return modelsPromise;
