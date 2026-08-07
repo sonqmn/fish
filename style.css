@@ -19,3 +19,10 @@
 .login-page .outline-button{border-color:#75c8f2;color:#0873ce;background:#f4fbff}
 .login-page .join-link{color:#557a9c}
 .login-page .join-link b{color:#0878e8}
+.notification-popup{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:#073b7966;backdrop-filter:blur(5px)}
+.notification-popup.hidden{display:none}
+.notification-popup-card{width:min(360px,100%);padding:28px 24px 24px;text-align:center;background:#fff;border:1px solid #cce9fa;border-radius:24px;box-shadow:0 22px 60px #063d7d48;animation:notification-pop .22s ease-out}
+.notification-popup-icon{width:58px;height:58px;margin:0 auto 14px;display:grid;place-items:center;font-size:28px;background:linear-gradient(145deg,#dff7ff,#b8e7ff);border-radius:50%}
+.notification-popup-card h2{margin:5px 0 10px;color:#073b79;font-size:22px}
+.notification-popup-card>p:not(.eyebrow){margin:0 0 22px;color:#557a9c;line-height:1.6;font-size:14px}
+@keyframes notification-pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
