@@ -114,14 +114,12 @@ try:
     wind_keys = ['windSpeed', 'windSpd', 'ws', '풍속']
     salinity_keys = ['salinity', 'salt', '염분']
 
-    selected = next((record for record in records if find_in_record(record, temp_keys) is not None), None)
+    selected = next((record for record in records if number(find_in_record(record, temp_keys)) is not None), None)
     if not selected:
         preview = body[:400].replace('\n', ' ')
         raise RuntimeError(f'응답에서 수온 항목을 찾지 못했습니다: {preview}')
 
     temperature = number(find_in_record(selected, temp_keys))
-    if temperature is None:
-        raise RuntimeError('수온 값이 숫자 형식이 아닙니다.')
 
     data = {
         'source': '기상청 해양종합관측자료',
