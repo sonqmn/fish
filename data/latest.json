@@ -1,6 +1,6 @@
 {
   "source": "기상청 해양종합관측자료",
-  "updatedAt": "2026-08-07T10:10:46.538438+09:00",
+  "updatedAt": "2026-08-07T10:54:11.740096+09:00",
   "status": "관측값 수집 재시도 중",
-  "error": "응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD     WS     WS     TW     TA      PA     HM #           KST        ID                    KO           deg           deg      m  deg    m/s    GST      C      C     hPa      % B, 202608071000,    21229,               울릉도, 131.11440000,  37.45540000,   0.4, 147,   1.9,   2.6,  29.2,  28.4, 1006.7,  87.0"
+  "error": "<urlopen error timed out>"
 }
