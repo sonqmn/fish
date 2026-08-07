@@ -1,0 +1,87 @@
+.sea-map {
+  width: 100%;
+  height: 260px;
+  margin-top: 10px;
+  overflow: hidden;
+  border: 1px solid #dce8e9;
+  border-radius: 20px;
+  background: #d8efea;
+  z-index: 1;
+}
+
+.alert-sea-map {
+  height: 220px;
+  margin-top: 12px;
+}
+
+.map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.map-toolbar b {
+  overflow: hidden;
+  color: #486771;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-toolbar button {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  color: #168e8a;
+  font-size: 11px;
+  font-weight: 700;
+  background: #e8f7f5;
+  border-radius: 9px;
+}
+
+.map-help {
+  margin: 8px 2px 0;
+  color: #7b9198;
+  font-size: 11px;
+}
+
+.location-chip b {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.temperature-chart .chart-area {
+  padding-left: 34px;
+}
+
+.temp-axis {
+  position: absolute;
+  top: 0;
+  bottom: 27px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #7f939a;
+  font-size: 9px;
+}
+
+.temperature-chart svg {
+  left: 34px;
+  width: calc(100% - 34px);
+}
+
+.temperature-chart .grid {
+  margin-left: 0;
+}
+
+.temperature-chart .chart-labels {
+  margin-left: 0;
+}
+
+.leaflet-control-attribution {
+  font-size: 8px;
+}
