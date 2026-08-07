@@ -25,7 +25,7 @@ async function runFishAnalysis(file){
 function setAnalysisLoading(){document.querySelector('#analysis-status').textContent='Gemini AI 분석 중…';document.querySelector('#diagnosis-percent').innerHTML='--<small>%</small>';document.querySelector('#diagnosis-level').textContent='분석하고 있어요';document.querySelector('#diagnosis-title').textContent='사진을 자세히 살펴보고 있습니다';document.querySelector('#diagnosis-summary').textContent='잠시만 기다려주세요.';}
 function renderFishAnalysis(data){const score=Math.max(0,Math.min(100,Number(data.suspicionScore)||0));document.querySelector('#analysis-status').textContent='Gemini AI 분석 완료';document.querySelector('#diagnosis-percent').innerHTML=`${score}<small>%</small>`;document.querySelector('#diagnosis-level').textContent=data.riskLevel||'확인 필요';document.querySelector('#diagnosis-title').textContent=`${data.species||'어종 미상'} · ${data.possibleDisease||'질병 후보 확인 필요'}`;document.querySelector('#diagnosis-summary').textContent=data.summary||'사진만으로 명확한 판단이 어렵습니다.';const evidence=[...(data.affectedAreas?.length?[`아픈 부위: ${data.affectedAreas.join(', ')}`]:[]),...(data.evidence||[])];document.querySelector('#diagnosis-evidence').innerHTML=evidence.map(item=>`<li>${escapeHtml(item)}</li>`).join('')||'<li>뚜렷한 시각적 근거를 확인하지 못했습니다.</li>';document.querySelector('#diagnosis-actions').innerHTML=(data.actions||[]).map(item=>`<li>${escapeHtml(item)}</li>`).join('')||'<li>수온과 용존산소를 측정하고 전문가에게 상담하세요.</li>';document.querySelector('#diagnosis-caution').textContent=(data.caution||'AI 분석은 참고용 1차 소견이며 확진을 대신하지 않습니다.');}
 function escapeHtml(value){const div=document.createElement('div');div.textContent=String(value);return div.innerHTML;}
-async function reanalyzeFish(){if(!currentFishPhoto){toast('먼저 물고기 사진을 선택해주세요.');return;}await runFishAnalysis(currentFishPhoto);}
+async function reanalyzeFish(){if(!currentFishPhoto){toast('먼저 물고기 사진을 선택해주세요.');return;}const notes=document.querySelector('#fish-notes').value.trim();if(!notes){toast('증상이나 질병 경과 등 추가 정보를 입력해주세요.');return;}toast('현재 사진과 추가 정보를 함께 다시 분석합니다.');await runFishAnalysis(currentFishPhoto);}
 function showDemoDiagnosis() {
   document.querySelector('#preview').src = 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=800&q=80';
   document.querySelector('#upload-state').classList.add('hidden');
@@ -34,6 +34,16 @@ function showDemoDiagnosis() {
 function resetDiagnosis() {
   photoInput.value = '';
   currentFishPhoto = null;
+  document.querySelector('#fish-notes').value = '';
+  document.querySelector('#preview').removeAttribute('src');
+  document.querySelector('#analysis-status').textContent = 'Gemini AI 분석 준비';
+  document.querySelector('#diagnosis-percent').innerHTML = '--<small>%</small>';
+  document.querySelector('#diagnosis-level').textContent = '사진을 선택해주세요';
+  document.querySelector('#diagnosis-title').textContent = '새 물고기 사진을 기다리고 있습니다';
+  document.querySelector('#diagnosis-summary').textContent = '사진을 올리면 새로운 분석을 시작합니다.';
+  document.querySelector('#diagnosis-evidence').innerHTML = '<li>새 사진의 체표, 지느러미, 눈, 아가미 이상 징후를 분석합니다.</li>';
+  document.querySelector('#diagnosis-actions').innerHTML = '<li>분석이 끝나면 새로운 권장 조치가 표시됩니다.</li>';
+  document.querySelector('#diagnosis-caution').textContent = 'AI 분석은 참고용 1차 소견이며 수산질병관리사의 확진을 대신하지 않습니다.';
   document.querySelector('#result-state').classList.add('hidden');
   document.querySelector('#upload-state').classList.remove('hidden');
 }
