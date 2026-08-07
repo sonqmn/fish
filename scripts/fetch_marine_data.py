@@ -11,6 +11,7 @@ from pathlib import Path
 
 KST = timezone(timedelta(hours=9))
 url = os.environ['KMA_OCEAN_API_URL'].strip()
+nifs_key = os.environ.get('NIFS_RED_TIDE_API_KEY', '').strip()
 
 
 def observation_url(raw_url):
@@ -118,6 +119,36 @@ def marine_fallback(reason):
     }
 
 
+def fetch_red_tide():
+    if not nifs_key:
+        return {'level': '키 등록 대기', 'message': '국립수산과학원 적조 API 키를 GitHub에 등록해주세요.'}
+    end = datetime.now(KST)
+    start = end - timedelta(days=90)
+    params = urllib.parse.urlencode({
+        'id': 'redtideList', 'key': nifs_key,
+        'sdate': start.strftime('%Y%m%d'), 'edate': end.strftime('%Y%m%d')
+    })
+    endpoint = f'https://www.nifs.go.kr/OpenAPI_json?{params}'
+    request = urllib.request.Request(endpoint, headers={'User-Agent': 'Ocean-Breathe/1.0', 'Accept': 'application/json'})
+    with urllib.request.urlopen(request, timeout=45) as response:
+        result = json.loads(response.read().decode('utf-8', 'replace'))
+    records = list(walk_records(result))
+    candidates = [record for record in records if find_in_record(record, ['cod_news', 'day_report', 'txt_seas'])]
+    if not candidates:
+        return {'source': '국립수산과학원 적조정보', 'level': '발표 없음', 'message': '최근 90일 적조 발생 발표가 없습니다.'}
+    latest = candidates[-1]
+    area = find_in_record(latest, ['txt_seas', 'area', '조사해역']) or '발표 해역 확인 필요'
+    species = find_in_record(latest, ['nam_biology', '원인생물']) or '원인생물 확인 중'
+    max_density = number(find_in_record(latest, ['max_density', '생물밀도max']))
+    report_date = find_in_record(latest, ['day_report', '조사일시'])
+    density_text = f' · 최대 {max_density:g}개체/mL' if max_density is not None else ''
+    return {
+        'source': '국립수산과학원 적조정보', 'level': '발생 정보',
+        'message': f'{area} · {species}{density_text}', 'reportedAt': report_date,
+        'area': area, 'species': species, 'maxDensity': max_density
+    }
+
+
 try:
     request = urllib.request.Request(observation_url(url), headers={'User-Agent': 'Ocean-Breathe/1.0', 'Accept': 'application/json, application/xml, text/plain, text/csv'})
     with urllib.request.urlopen(request, timeout=90) as response:
@@ -172,6 +203,11 @@ except Exception as error:
         data = marine_fallback(str(error)[:120])
     except Exception:
         data = {'source': '기상청 해양종합관측자료', 'updatedAt': datetime.now(KST).isoformat(), 'status': '관측값 수집 재시도 중', 'error': str(error)}
+
+try:
+    data['redTide'] = fetch_red_tide()
+except Exception as error:
+    data['redTide'] = {'source': '국립수산과학원 적조정보', 'level': '갱신 재시도', 'message': f'적조 자료 호출 오류: {str(error)[:120]}'}
 
 Path('data').mkdir(exist_ok=True)
 Path('data/latest.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
