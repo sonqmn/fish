@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="map.css?v=sea-map-20260807" />
+    <link rel="stylesheet" href="reports.css?v=reports-live-data-20260807" />
   </head>
   <body>
     <div class="app-shell">
@@ -22,7 +23,7 @@
         <section id="home" class="screen active">
           <div class="hero-copy"><p class="eyebrow">FISH MORTALITY PREVENTION</p><h1 id="welcome-title">안녕하세요, 김바다 님<br /><strong>폐사 징후를 먼저 막아요.</strong></h1><p id="farm-context">기장 일광 양식장 반경 5km를 분석해<br/>물고기 폐사 위험을 조기에 알려드립니다.</p></div><section id="ai-zone-status" class="ai-zone-status safe"><span>✦ AI 관리구역 분석</span><div><b id="zone-risk-label">양호</b><p id="zone-risk-text">현재 양식장 주변 환경은 안정적이에요.<br/>수온·바람·적조 지수를 계속 관찰 중입니다.</p></div><i id="zone-score">82<small>/100</small></i></section>
           <section class="weather-card"><div><span class="pill" id="live-station">실시간 관측소 연결 중</span><h2>양식장 주변<br />해양 상태를 확인해요</h2><p id="live-summary">공식 관측 데이터를 불러오는 중입니다.</p></div><div class="sun-icon">☀</div><div class="wave-line"></div></section>
-          <section class="status-row"><article><span class="status-icon orange">△</span><div><small>고수온 위험</small><b id="water-temp-risk">관측 대기</b><em id="water-temp-value">수온 정보 연결 중</em></div></article><article><span class="status-icon red">●</span><div><small>적조 위험</small><b>관심</b></div></article></section>
+          <section class="status-row"><article><span class="status-icon orange">△</span><div><small>고수온 위험</small><b id="water-temp-risk">관측 대기</b><em id="water-temp-value">수온 정보 연결 중</em></div></article><article><span class="status-icon red">●</span><div><small>적조 위험</small><b id="red-tide-risk">자료 확인 중</b><em id="red-tide-value">공식 적조 자료 연결 중</em></div></article></section>
           <section class="section-head"><div><p class="eyebrow">실시간 위험 정보</p><h2>내 주변 바다 상황</h2></div><button onclick="openAlerts()">전체 보기 →</button></section><p id="live-updated">공식 관측 자료 갱신 대기 중</p>
           <div class="map-toolbar"><b id="selected-sea-label">지도에서 바다 위치를 선택하세요</b><button type="button" onclick="selectMySeaLocation()">⌖ 내 위치</button></div>
           <div id="home-sea-map" class="sea-map" aria-label="내 주변 바다 선택 지도"></div>
@@ -34,7 +35,8 @@
           <div class="location-chip">⌖ <b id="alerts-location-label">지도에서 선택한 바다 위치</b></div>
           <div id="alerts-sea-map" class="sea-map alert-sea-map" aria-label="선택한 바다 위치 지도"></div>
           <section class="risk-banner"><div class="risk-ring">!</div><div><p>고수온 위험 분석</p><h2 id="alerts-risk-title">공식 수온 관측 대기 중</h2><small id="alerts-temp-detail">선택 위치에 가까운 관측값을 확인합니다.</small></div></section>
-          <div class="temperature-chart"><div class="chart-title"><b>해수면 온도 추이</b><span id="chart-current-temp">최근 7일 · 관측 대기</span></div><div class="chart-area"><div class="temp-axis"><span id="temp-axis-high">30°C</span><span id="temp-axis-mid">25°C</span><span id="temp-axis-low">20°C</span></div><div class="grid"></div><svg viewBox="0 0 330 105" preserveAspectRatio="none"><path d="M0,81 C28,74 32,86 58,65 S88,72 111,51 S144,63 168,43 S198,53 219,27 S252,43 278,14 S306,32 330,9" fill="none" stroke="#ff7d51" stroke-width="4" stroke-linecap="round"/></svg><div class="chart-labels"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>오늘</span></div></div></div>
+          <div class="temperature-chart"><div class="chart-title"><b>해수면 온도 추이</b><span id="chart-current-temp">최근 7일 · 관측 대기</span></div><div class="chart-area"><div class="temp-axis"><span id="temp-axis-high">30°C</span><span id="temp-axis-mid">25°C</span><span id="temp-axis-low">20°C</span></div><div class="grid"></div><svg viewBox="0 0 330 105" preserveAspectRatio="none"><path id="temp-chart-path" d="" fill="none" stroke="#ff7d51" stroke-width="4" stroke-linecap="round"/></svg><div id="temp-point-values" class="temp-point-values"></div><div class="chart-labels"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>오늘</span></div></div></div>
+          <section class="marine-analysis"><h2>공식 관측 분석자료</h2><div id="marine-analysis-grid" class="marine-analysis-grid"><p>최신 자료를 불러오는 중입니다.</p></div></section>
           <section class="alert-list"><h2>현재 알림 <em>3</em></h2><article><span class="badge orange">주의</span><div><b>고수온 주의보 발령</b><p>기장군 일광면 해역 · 10분 전</p></div><span>›</span></article><article><span class="badge pink">관심</span><div><b>적조 예비 주의</b><p>기장군 연화리 해역 · 1시간 전</p></div><span>›</span></article></section>
         </section>
 
@@ -48,6 +50,7 @@
           <div class="page-intro"><p class="eyebrow">MY OCEAN FARM</p><h1>마이페이지</h1><p id="mypage-user">내 계정과 양식장 위치를 관리해요.</p></div>
           <section class="profile-card"><span>👤</span><div><small>로그인 계정</small><b id="profile-email">비회원</b></div></section>
           <section class="farm-location-card"><h2>내 양식장 위치</h2><p>주소를 검색하거나 지도에서 직접 선택하세요. 저장한 위치는 위험 알림 지도에 반영됩니다.</p><div class="address-search"><input id="farm-address" placeholder="예: 부산 기장군 일광면"/><button type="button" onclick="searchFarmAddress()">검색</button></div><div id="farm-map" class="farm-map"></div><p id="farm-location-label" class="field-hint">등록된 양식장 위치가 없습니다.</p><button class="primary-button" type="button" onclick="saveFarmLocation()">양식장 위치 저장</button></section>
+          <section class="my-reports-card"><div class="my-reports-head"><div><h2>내 제보 확인하기</h2><p>등록한 사진과 제보 내용을 확인할 수 있어요.</p></div><b id="my-report-count">0건</b></div><div id="my-reports-list" class="my-reports-list"><p class="empty-state">아직 등록한 제보가 없습니다.</p></div></section>
           <button class="outline-button logout-button" type="button" onclick="firebaseLogout()">로그아웃</button>
         </section>
 
@@ -56,11 +59,11 @@
           <form id="report-form"><label>발생 위치 <span class="required">필수</span><div class="input-box"><input id="report-location" placeholder="예: 부산 기장군 일광면 해안" /><button type="button" onclick="searchReportAddress()">주소 검색</button><button type="button" onclick="getLocation()">현재 GPS</button></div><p class="field-hint">주소를 입력해 검색하거나 지도·현재 GPS로 지정하세요.</p><div id="report-map" class="report-map" aria-label="발생 위치 지도"></div><p id="gps-map-label" class="field-hint">지도에서 발생 위치를 선택하세요.</p></label><label>제보 내용 <span class="required">필수</span><textarea id="report-description" placeholder="발견한 상황을 알려주세요. (예: 해변가에 물고기가 다수 떠 있어요)"></textarea></label><label>사진 첨부 <span class="required">필수</span><label class="report-photo" for="report-image"><span class="photo-icon">📷</span><b id="report-photo-label">사진 추가하기</b><small>최대 3장</small></label><input id="report-image" type="file" accept="image/*" multiple hidden /><div id="report-preview" class="report-preview"></div></label><button class="primary-button submit" type="submit">제보 등록하기</button></form>
         </section>
       </main>
-      <nav class="bottom-nav"><button class="nav-item active" data-page="home" onclick="goTo('home')"><span>⚠️</span>위험 알림</button><button class="nav-item" data-page="diagnosis" onclick="goTo('diagnosis')"><span>🔎</span>어류 진단</button><button class="nav-item" data-page="report" onclick="goTo('report')"><span>📣</span>제보하기</button></nav><aside id="notification-panel" class="side-panel hidden"><div class="panel-head"><b>내 양식장 알림</b><button onclick="toggleNotifications()">×</button></div><article><span>⚠</span><div><b>고수온 주의</b><p>내 양식장 주변 수온 상승 · 10분 전</p></div></article><article><span>🌧</span><div><b>기상 안전 안내</b><p>강풍·풍랑 예비특보 안내 · 오늘 09:20</p></div></article></aside>
+      <nav class="bottom-nav"><button class="nav-item active" data-page="home" onclick="goTo('home')"><span>⚠️</span>위험 알림</button><button class="nav-item" data-page="diagnosis" onclick="goTo('diagnosis')"><span>🔎</span>어류 진단</button><button class="nav-item" data-page="report" onclick="goTo('report')"><span>📣</span>제보하기</button></nav><aside id="notification-panel" class="side-panel hidden"><div class="panel-head"><b>내 알림</b><button onclick="toggleNotifications()">×</button></div><div id="notification-list"></div></aside>
       <div id="toast" class="toast"></div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="script.js?v=fish-affected-areas-20260807"></script>
+    <script src="script.js?v=reports-live-data-20260807"></script>
     <script type="module" src="auth.js?v=firebase-app-id-fix-20260807"></script>
     <script type="module" src="ai-diagnosis.js?v=fish-affected-areas-20260807"></script>
   </body>

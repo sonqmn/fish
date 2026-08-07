@@ -1,0 +1,8 @@
+.marine-analysis,.my-reports-card{margin-top:20px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:18px}
+.marine-analysis h2,.my-reports-card h2{margin:0;font-size:18px}
+.marine-analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:13px}
+.marine-metric{padding:12px;background:#f2f9f8;border-radius:12px}.marine-metric small{display:block;color:var(--muted);font-size:10px}.marine-metric b{display:block;margin-top:4px;font-size:15px}
+.my-reports-head{display:flex;justify-content:space-between;gap:12px}.my-reports-head p{margin:5px 0;color:var(--muted);font-size:12px}
+.my-report{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.my-report-images{display:flex;gap:7px;margin-bottom:9px}.my-report-images img{width:70px;height:70px;object-fit:cover;border-radius:10px}.my-report b,.my-report p,.my-report small{display:block;margin:4px 0}.my-report p{font-size:13px;line-height:1.5}.my-report small,.empty-state{color:var(--muted);font-size:11px}
+.notification-item{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.notification-item>span{font-size:20px}.notification-item div{flex:1}.notification-item p{margin:4px 0;color:var(--muted);font-size:11px}.notification-item button{padding:6px 10px;border-radius:8px;background:#e6f6f4;color:#168d88;font-size:11px;font-weight:700}
+.temp-point-values{position:absolute;left:30px;right:0;top:0;height:94px;pointer-events:none}.temp-point-values span{position:absolute;transform:translate(-50%,-100%);font-size:9px;font-weight:700;color:#e86f42}
