@@ -50,25 +50,23 @@ window.analyzeFishImage = async (file, notes = '') => {
 반드시 아래 키를 가진 JSON 하나만 한국어로 반환하세요.
 {"species":"추정 어종 또는 어종 미상","suspicionScore":0부터100 사이 정수,"riskLevel":"양호 또는 주의 또는 위험","possibleDisease":"가능한 질병 후보 또는 판단 어려움","affectedAreas":["사진에서 이상이 보이는 신체 부위"],"summary":"관찰 결과 요약","evidence":["사진에서 확인한 구체적인 시각 근거"],"actions":["즉시 할 수 있는 안전한 조치"],"caution":"사진 기반 AI 1차 소견과 한계를 설명하는 문장"}`;
   const request = [prompt, { inlineData: { data: imageData, mimeType: file.type } }];
-  let response;
-  let lastQuotaError;
+  const attemptErrors = [];
   for (const model of models) {
     try {
-      response = await model.generateContent(request);
-      break;
+      const response = await model.generateContent(request);
+      const text = response.response.text().replace(/^```json\s*|\s*```$/g, '').trim();
+      const result = JSON.parse(text);
+      diagnosisCache.set(cacheKey, result);
+      return result;
     } catch (error) {
       const detail = String(error?.message || error);
-      const quotaError = detail.includes('[429') || detail.toLowerCase().includes('quota');
-      if (!quotaError) throw error;
-      lastQuotaError = error;
+      const canTryNext = /\[(400|404|429|500|503)\b|quota|rate.?limit|not.?found|unsupported|model|JSON/i.test(detail);
+      attemptErrors.push(detail);
+      if (!canTryNext) throw error;
     }
   }
-  if (!response) {
-    console.warn('All free Gemini model quotas were exhausted.', lastQuotaError);
-    throw new Error('오늘 사용할 수 있는 Gemini 무료 분석 한도를 모두 사용했습니다. 미국 태평양 시간 자정(한국 시간 다음 날 오후 4시경)에 초기화됩니다.');
-  }
-  const text = response.response.text().replace(/^```json\s*|\s*```$/g, '').trim();
-  const result = JSON.parse(text);
-  diagnosisCache.set(cacheKey, result);
-  return result;
+  console.warn('Gemini model attempts failed.', attemptErrors);
+  const quotasExhausted = attemptErrors.some(detail => /\[429\b|quota|rate.?limit/i.test(detail));
+  if (quotasExhausted) throw new Error('사용 가능한 Gemini 무료 모델의 한도가 모두 소진되었거나 일시적으로 제한되었습니다. 잠시 후 다시 시도하거나 한국 시간 다음 날 오후 4시경 다시 이용해 주세요.');
+  throw new Error('현재 사용 가능한 Gemini 모델에서 정상 분석 결과를 받지 못했습니다. 잠시 후 다시 시도해 주세요.');
 };
