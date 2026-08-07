@@ -26,3 +26,9 @@
 .notification-popup-card h2{margin:5px 0 10px;color:#073b79;font-size:22px}
 .notification-popup-card>p:not(.eyebrow){margin:0 0 22px;color:#557a9c;line-height:1.6;font-size:14px}
 @keyframes notification-pop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.sea-map-stage{position:relative;margin-top:10px;border-radius:20px;overflow:hidden;box-shadow:0 12px 30px #0759a51f}
+.sea-map-stage .sea-map{margin-top:0;height:390px;border-radius:20px}
+.map-marine-card{position:absolute;z-index:500;left:12px;right:12px;bottom:12px;padding:15px 16px 13px;background:#f8fdfff2;border:1px solid #bfe5fa;border-radius:18px;box-shadow:0 10px 28px #063d7d32;backdrop-filter:blur(10px)}
+.map-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.map-card-head div{display:flex;flex-direction:column;gap:2px}.map-card-head small,.map-card-grid small{color:#6287a3;font-size:10px}.map-card-head b{max-width:260px;color:#0757a9;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.map-card-head>span{font-size:22px}
+.map-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}.map-card-grid div{padding:9px 7px;text-align:center;background:#e8f7ff;border-radius:11px}.map-card-grid b{display:block;margin-top:3px;color:#073b79;font-size:16px}
+.map-marine-card>p{margin:9px 2px 0;color:#557a9c;font-size:10px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
