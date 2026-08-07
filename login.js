@@ -1,4 +1,4 @@
-import { firebaseConfig, isFirebaseConfigured } from './firebase-config.js';
+import { firebaseConfig, isFirebaseConfigured } from './firebase-config.js?v=ocean-breath-16114';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 
