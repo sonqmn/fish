@@ -88,6 +88,36 @@ def number(value):
         return None
 
 
+def marine_fallback(reason):
+    """Keep the live screen useful when the KMA API Hub blocks/times out on GitHub runners."""
+    endpoint = ('https://marine-api.open-meteo.com/v1/marine?latitude=35.2692&longitude=129.2334'
+                '&current=sea_surface_temperature,wave_height&hourly=sea_surface_temperature'
+                '&past_days=7&forecast_days=1&timezone=Asia%2FSeoul')
+    with urllib.request.urlopen(urllib.request.Request(endpoint, headers={'User-Agent': 'Ocean-Breathe/1.0'}), timeout=30) as response:
+        result = json.loads(response.read().decode('utf-8'))
+    hourly = result.get('hourly', {})
+    times, values = hourly.get('time', []), hourly.get('sea_surface_temperature', [])
+    daily = []
+    for day in sorted({stamp[:10] for stamp in times})[-7:]:
+        day_values = [number(value) for stamp, value in zip(times, values) if stamp.startswith(day) and number(value) is not None]
+        if day_values:
+            daily.append({'date': day, 'temperature': round(sum(day_values) / len(day_values), 1)})
+    current = result.get('current', {})
+    return {
+        'source': 'Open-Meteo Marine 보조자료',
+        'primarySource': '기상청 해양종합관측자료',
+        'primaryStatus': f'기상청 연결 지연: {reason}',
+        'station': '기장 앞바다 해양 격자',
+        'updatedAt': datetime.now(KST).isoformat(),
+        'observedAt': current.get('time'),
+        'temperature': number(current.get('sea_surface_temperature')),
+        'waveHeight': number(current.get('wave_height')),
+        'history': daily,
+        'redTide': {'level': '자료 미연결', 'message': '적조 발생 여부는 국립수산과학원 별도 공식 자료가 필요합니다.'},
+        'status': '실제 해양 보조자료 수집 완료'
+    }
+
+
 try:
     request = urllib.request.Request(observation_url(url), headers={'User-Agent': 'Ocean-Breathe/1.0', 'Accept': 'application/json, application/xml, text/plain, text/csv'})
     with urllib.request.urlopen(request, timeout=90) as response:
@@ -133,9 +163,15 @@ try:
     }
 except urllib.error.HTTPError as error:
     detail = error.read().decode('utf-8', 'replace')[:500]
-    data = {'source': '기상청 해양종합관측자료', 'updatedAt': datetime.now(KST).isoformat(), 'status': '관측값 수집 재시도 중', 'error': f'HTTP {error.code}: {detail}'}
+    try:
+        data = marine_fallback(f'HTTP {error.code}')
+    except Exception:
+        data = {'source': '기상청 해양종합관측자료', 'updatedAt': datetime.now(KST).isoformat(), 'status': '관측값 수집 재시도 중', 'error': f'HTTP {error.code}: {detail}'}
 except Exception as error:
-    data = {'source': '기상청 해양종합관측자료', 'updatedAt': datetime.now(KST).isoformat(), 'status': '관측값 수집 재시도 중', 'error': str(error)}
+    try:
+        data = marine_fallback(str(error)[:120])
+    except Exception:
+        data = {'source': '기상청 해양종합관측자료', 'updatedAt': datetime.now(KST).isoformat(), 'status': '관측값 수집 재시도 중', 'error': str(error)}
 
 Path('data').mkdir(exist_ok=True)
 Path('data/latest.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
