@@ -10,3 +10,5 @@ body{background:linear-gradient(180deg,#63cef7 0,#1685ed 55%,#0757d4 100%)}
 .risk-banner{background:linear-gradient(110deg,#e4f6ff,#cdeeff)}.risk-ring{background:linear-gradient(145deg,#15afe9,#0873ec)}
 .location-chip,.input-box{border-color:#cfe8fa}.bottom-nav{border-top-color:#cfe8fa}.side-panel{border-color:#cce8fa;box-shadow:0 15px 35px #064b9b25}
 .marine-metric{background:#e8f7ff}.outline-button{border-color:#9fd6f5;color:#0873ce}.map-toolbar button{color:#0873d9}
+
+.icon-button{position:relative}.icon-button i{display:none;position:absolute;right:-1px;top:-1px;width:9px;height:9px;background:#f04444;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 2px #f0444422}
