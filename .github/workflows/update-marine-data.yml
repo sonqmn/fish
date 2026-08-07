@@ -12,9 +12,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: '3.12' }
-      - name: Fetch official marine observation
+      - name: Fetch KMA ocean observation
         env:
-          MARINE_WEATHER_API_KEY: ${{ secrets.MARINE_WEATHER_API_KEY }}
+          KMA_OCEAN_API_URL: ${{ secrets.MARINE_WEATHER_API_KEY }}
         run: python scripts/fetch_marine_data.py
       - run: |
           git config user.name "github-actions[bot]"
