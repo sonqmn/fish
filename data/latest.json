@@ -1,6 +1,45 @@
 {
-  "source": "기상청 해양종합관측자료",
-  "updatedAt": "2026-08-07T10:54:11.740096+09:00",
-  "status": "관측값 수집 재시도 중",
-  "error": "<urlopen error timed out>"
+  "source": "Open-Meteo Marine 보조자료",
+  "primarySource": "기상청 해양종합관측자료",
+  "primaryStatus": "기상청 연결 지연: <urlopen error [WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다>",
+  "station": "기장 앞바다 해양 격자",
+  "updatedAt": "2026-08-07T11:26:04.325736+09:00",
+  "observedAt": "2026-08-07T11:15",
+  "temperature": 26.9,
+  "waveHeight": 0.76,
+  "history": [
+    {
+      "date": "2026-08-01",
+      "temperature": 23.9
+    },
+    {
+      "date": "2026-08-02",
+      "temperature": 24.8
+    },
+    {
+      "date": "2026-08-03",
+      "temperature": 25.8
+    },
+    {
+      "date": "2026-08-04",
+      "temperature": 26.4
+    },
+    {
+      "date": "2026-08-05",
+      "temperature": 26.5
+    },
+    {
+      "date": "2026-08-06",
+      "temperature": 26.4
+    },
+    {
+      "date": "2026-08-07",
+      "temperature": 27.0
+    }
+  ],
+  "redTide": {
+    "level": "자료 미연결",
+    "message": "적조 발생 여부는 국립수산과학원 별도 공식 자료가 필요합니다."
+  },
+  "status": "실제 해양 보조자료 수집 완료"
 }
