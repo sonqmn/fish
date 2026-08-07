@@ -1,13 +1,20 @@
-import { initializeApp, getApps, getApp } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
-import { getAI, getGenerativeModel, GoogleAIBackend } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-ai.js';
-import { firebaseConfig } from './firebase-config.js';
-
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-const ai = getAI(app, { backend: new GoogleAIBackend() });
-const model = getGenerativeModel(ai, {
-  model: 'gemini-2.5-flash',
-  generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
-});
+let modelPromise;
+async function loadModel() {
+  if (!modelPromise) modelPromise = (async () => {
+    const [{ initializeApp, getApps, getApp }, { getAI, getGenerativeModel, GoogleAIBackend }, { firebaseConfig }] = await Promise.all([
+      import('https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/12.1.0/firebase-ai.js'),
+      import('./firebase-config.js')
+    ]);
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    const ai = getAI(app, { backend: new GoogleAIBackend() });
+    return getGenerativeModel(ai, {
+      model: 'gemini-2.5-flash',
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+    });
+  })();
+  return modelPromise;
+}
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -22,6 +29,7 @@ window.analyzeFishImage = async (file, notes = '') => {
   if (!file.type.startsWith('image/')) throw new Error('이미지 파일을 선택해주세요.');
   if (file.size > 10 * 1024 * 1024) throw new Error('사진 크기는 10MB 이하로 선택해주세요.');
   const imageData = await fileToBase64(file);
+  const model = await loadModel();
   const prompt = `당신은 양식 어류 건강을 보조 분석하는 AI입니다. 사진에서 직접 관찰되는 내용과 사용자 정보만 사용하세요. 확진처럼 단정하지 말고, 보이지 않는 아가미나 내부 장기의 상태를 추측하지 마세요. 응급 폐사나 전염성 질병 가능성이 있으면 전문가 상담을 우선 권고하세요.
 
 사용자 추가 정보: ${notes || '추가 정보 없음'}
