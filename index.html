@@ -27,7 +27,7 @@
           <section class="status-row"><article><span class="status-icon orange">△</span><div><small>고수온 위험</small><b id="water-temp-risk">관측 대기</b><em id="water-temp-value">수온 정보 연결 중</em></div></article><article><span class="status-icon red">●</span><div><small>적조 위험</small><b id="red-tide-risk">자료 확인 중</b><em id="red-tide-value">공식 적조 자료 연결 중</em></div></article></section>
           <section class="section-head"><div><p class="eyebrow">실시간 위험 정보</p><h2>내 주변 바다 상황</h2></div><button onclick="openAlerts()">전체 보기 →</button></section><p id="live-updated">공식 관측 자료 갱신 대기 중</p>
           <div class="map-toolbar"><b id="selected-sea-label">지도에서 바다 위치를 선택하세요</b><button type="button" onclick="selectMySeaLocation()">⌖ 내 위치</button></div>
-          <div id="home-sea-map" class="sea-map" aria-label="내 주변 바다 선택 지도"></div>
+          <div class="sea-map-stage"><div id="home-sea-map" class="sea-map" aria-label="내 주변 바다 선택 지도"></div><section class="map-marine-card" aria-label="선택 위치 해양 상태"><div class="map-card-head"><div><small>선택 위치 해양 상태</small><b id="map-card-station">자료 불러오는 중</b></div><span id="map-card-weather">🌊</span></div><div class="map-card-grid"><div><small>수온</small><b id="map-card-temp">--°C</b></div><div><small>파고</small><b id="map-card-wave">--m</b></div><div><small>풍속</small><b id="map-card-wind">--m/s</b></div></div><p id="map-card-summary">지도에서 바다 위치를 선택하면 실제 해양·기상 자료를 표시합니다.</p></section></div>
           <p class="map-help">바다 위를 누르면 해당 위치의 위험 정보를 볼 수 있습니다.</p>
         </section>
 
@@ -63,7 +63,7 @@
       <div id="toast" class="toast"></div>
     </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script src="script.js?v=notification-popup-20260807"></script>
+    <script src="script.js?v=map-marine-overlay-20260807"></script>
     <script type="module" src="auth.js?v=new-owner-project-20260807b"></script>
     <script type="module" src="ai-diagnosis.js?v=new-owner-project-20260807b"></script>
   </body>
