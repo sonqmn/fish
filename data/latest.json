@@ -1,12 +1,12 @@
 {
   "source": "Open-Meteo Marine 보조자료",
   "primarySource": "기상청 해양종합관측자료",
-  "primaryStatus": "기상청 연결 지연: 응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD",
+  "primaryStatus": "기상청 연결 지연: <urlopen error timed out>",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-08-07T11:28:41.387070+09:00",
-  "observedAt": "2026-08-07T11:15",
+  "updatedAt": "2026-08-07T11:51:43.053152+09:00",
+  "observedAt": "2026-08-07T11:45",
   "temperature": 26.9,
-  "waveHeight": 0.76,
+  "waveHeight": 0.74,
   "history": [
     {
       "date": "2026-08-01",
@@ -38,8 +38,13 @@
     }
   ],
   "redTide": {
-    "level": "자료 미연결",
-    "message": "적조 발생 여부는 국립수산과학원 별도 공식 자료가 필요합니다."
+    "source": "국립수산과학원 적조정보",
+    "level": "발생 정보",
+    "message": "산양읍 풍화리 월명도 북측 및 장군봉 내만 · Akashiwo sanguinea · 최대 142개체/mL",
+    "reportedAt": null,
+    "area": "산양읍 풍화리 월명도 북측 및 장군봉 내만",
+    "species": "Akashiwo sanguinea",
+    "maxDensity": 142.0
   },
   "status": "실제 해양 보조자료 수집 완료"
 }
