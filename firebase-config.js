@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyBVDD4qGrrnptq2yr5AV5jgksnkr5LYmfI',
-  authDomain: 'ocean-breathe-ce596.firebaseapp.com',
-  projectId: 'ocean-breathe-ce596',
-  storageBucket: 'ocean-breathe-ce596.firebasestorage.app',
-  messagingSenderId: '15354827224',
-  appId: '1:15354827224:web:791967d1c41961dfd122ad'
+  apiKey: 'AIzaSyAtkXpxvtCsV-8xbnCoqWaQOllV9vDqVWE',
+  authDomain: 'ocean-breath-16114.firebaseapp.com',
+  projectId: 'ocean-breath-16114',
+  storageBucket: 'ocean-breath-16114.firebasestorage.app',
+  messagingSenderId: '860364403667',
+  appId: '1:860364403667:web:8827f14ec13302ab51b526'
 };
 
 export const isFirebaseConfigured = !Object.values(firebaseConfig).some(value => value.startsWith('YOUR_'));
