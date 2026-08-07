@@ -16,10 +16,11 @@ async function loadModels() {
     const ai = getAI(app, { backend: new GoogleAIBackend() });
     const options = generationConfig => ({ generationConfig });
     const generationConfig = { responseMimeType: 'application/json', temperature: 0.2 };
-    return {
-      primary: getGenerativeModel(ai, { model: 'gemini-3.6-flash', ...options(generationConfig) }),
-      fallback: getGenerativeModel(ai, { model: 'gemini-2.5-flash-lite', ...options(generationConfig) })
-    };
+    return [
+      getGenerativeModel(ai, { model: 'gemini-3.6-flash', ...options(generationConfig) }),
+      getGenerativeModel(ai, { model: 'gemini-2.5-flash-lite', ...options(generationConfig) }),
+      getGenerativeModel(ai, { model: 'gemini-2.5-flash', ...options(generationConfig) })
+    ];
   })();
   return modelsPromise;
 }
@@ -50,20 +51,21 @@ window.analyzeFishImage = async (file, notes = '') => {
 {"species":"추정 어종 또는 어종 미상","suspicionScore":0부터100 사이 정수,"riskLevel":"양호 또는 주의 또는 위험","possibleDisease":"가능한 질병 후보 또는 판단 어려움","affectedAreas":["사진에서 이상이 보이는 신체 부위"],"summary":"관찰 결과 요약","evidence":["사진에서 확인한 구체적인 시각 근거"],"actions":["즉시 할 수 있는 안전한 조치"],"caution":"사진 기반 AI 1차 소견과 한계를 설명하는 문장"}`;
   const request = [prompt, { inlineData: { data: imageData, mimeType: file.type } }];
   let response;
-  try {
-    response = await models.primary.generateContent(request);
-  } catch (error) {
-    const detail = String(error?.message || error);
-    if (!detail.includes('[429') && !detail.toLowerCase().includes('quota')) throw error;
+  let lastQuotaError;
+  for (const model of models) {
     try {
-      response = await models.fallback.generateContent(request);
-    } catch (fallbackError) {
-      const fallbackDetail = String(fallbackError?.message || fallbackError);
-      if (fallbackDetail.includes('[429') || fallbackDetail.toLowerCase().includes('quota')) {
-        throw new Error('Gemini 무료 분석 사용량을 모두 사용했습니다. 무료 한도가 초기화된 뒤 다시 시도해 주세요. 같은 사진과 설명의 중복 분석은 자동으로 줄이고 있습니다.');
-      }
-      throw fallbackError;
+      response = await model.generateContent(request);
+      break;
+    } catch (error) {
+      const detail = String(error?.message || error);
+      const quotaError = detail.includes('[429') || detail.toLowerCase().includes('quota');
+      if (!quotaError) throw error;
+      lastQuotaError = error;
     }
+  }
+  if (!response) {
+    console.warn('All free Gemini model quotas were exhausted.', lastQuotaError);
+    throw new Error('오늘 사용할 수 있는 Gemini 무료 분석 한도를 모두 사용했습니다. 미국 태평양 시간 자정(한국 시간 다음 날 오후 4시경)에 초기화됩니다.');
   }
   const text = response.response.text().replace(/^```json\s*|\s*```$/g, '').trim();
   const result = JSON.parse(text);
