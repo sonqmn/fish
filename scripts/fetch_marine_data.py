@@ -90,7 +90,7 @@ def number(value):
 
 try:
     request = urllib.request.Request(observation_url(url), headers={'User-Agent': 'Ocean-Breathe/1.0', 'Accept': 'application/json, application/xml, text/plain, text/csv'})
-    with urllib.request.urlopen(request, timeout=30) as response:
+    with urllib.request.urlopen(request, timeout=90) as response:
         payload = response.read()
         content_type = response.headers.get('Content-Type', '')
         charset = response.headers.get_content_charset()
