@@ -1,0 +1,12 @@
+:root{--navy:#073b79;--muted:#557a9c;--line:#d6ebfb;--mint:#087df1;--paper:#f4fbff}
+body{background:linear-gradient(180deg,#63cef7 0,#1685ed 55%,#0757d4 100%)}
+.app-shell{background:linear-gradient(180deg,#f8fdff 0,#edf9ff 100%);box-shadow:0 0 55px #003d9a66}
+.topbar{border-bottom-color:#d9efff;background:#fffffff2}.brand-mark{background:linear-gradient(145deg,#05bde9,#0569ee)}
+.avatar{background:#d9f3ff;color:#086cca}.hero-copy strong,.eyebrow,.nav-item.active{color:#0878e8}
+.ai-zone-status{border-color:#cce9fa;background:#eef9ff}.weather-card{background:linear-gradient(145deg,#38c7f1 0%,#087af0 58%,#0458d5 100%)}
+.weather-card:after{content:"";position:absolute;width:180px;height:180px;right:-45px;bottom:-90px;border:2px solid #ffffff45;border-radius:50%;box-shadow:0 0 0 18px #ffffff12,0 0 0 40px #ffffff0b}
+.primary-button{background:linear-gradient(90deg,#08a9ed,#086be9);box-shadow:0 8px 20px #087be634}
+.status-row article,.temperature-chart,.marine-analysis,.my-reports-card,.farm-location-card{border-color:#d7ebfa;box-shadow:0 7px 20px #095cab0d}
+.risk-banner{background:linear-gradient(110deg,#e4f6ff,#cdeeff)}.risk-ring{background:linear-gradient(145deg,#15afe9,#0873ec)}
+.location-chip,.input-box{border-color:#cfe8fa}.bottom-nav{border-top-color:#cfe8fa}.side-panel{border-color:#cce8fa;box-shadow:0 15px 35px #064b9b25}
+.marine-metric{background:#e8f7ff}.outline-button{border-color:#9fd6f5;color:#0873ce}.map-toolbar button{color:#0873d9}
