@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="map.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -22,15 +23,18 @@
           <div class="hero-copy"><p class="eyebrow">FISH MORTALITY PREVENTION</p><h1 id="welcome-title">안녕하세요, 김바다 님<br /><strong>폐사 징후를 먼저 막아요.</strong></h1><p id="farm-context">기장 일광 양식장 반경 5km를 분석해<br/>물고기 폐사 위험을 조기에 알려드립니다.</p></div><section id="ai-zone-status" class="ai-zone-status safe"><span>✦ AI 관리구역 분석</span><div><b id="zone-risk-label">양호</b><p id="zone-risk-text">현재 양식장 주변 환경은 안정적이에요.<br/>수온·바람·적조 지수를 계속 관찰 중입니다.</p></div><i id="zone-score">82<small>/100</small></i></section>
           <section class="weather-card"><div><span class="pill" id="live-station">실시간 관측소 연결 중</span><h2>양식장 주변<br />해양 상태를 확인해요</h2><p id="live-summary">공식 관측 데이터를 불러오는 중입니다.</p></div><div class="sun-icon">☀</div><div class="wave-line"></div></section>
           <section class="status-row"><article><span class="status-icon orange">△</span><div><small>고수온 위험</small><b id="water-temp-risk">관측 대기</b><em id="water-temp-value">수온 정보 연결 중</em></div></article><article><span class="status-icon red">●</span><div><small>적조 위험</small><b>관심</b></div></article></section>
-          <section class="section-head"><div><p class="eyebrow">실시간 위험 정보</p><h2>내 주변 바다 상황</h2></div><button onclick="goTo('alerts')">전체 보기 →</button></section><p id="live-updated">공식 관측 자료 갱신 대기 중</p>
-          <div class="map-preview"><div class="coast coast-one"></div><div class="coast coast-two"></div><span class="map-label">기장군</span><button class="map-pin p1">!</button><button class="map-pin p2">!</button><button class="map-pin p3">!</button><div class="map-legend"><span></span> 신고·위험 지점</div></div>
+          <section class="section-head"><div><p class="eyebrow">실시간 위험 정보</p><h2>내 주변 바다 상황</h2></div><button onclick="openAlerts()">전체 보기 →</button></section><p id="live-updated">공식 관측 자료 갱신 대기 중</p>
+          <div class="map-toolbar"><b id="selected-sea-label">지도에서 바다 위치를 선택하세요</b><button type="button" onclick="selectMySeaLocation()">⌖ 내 위치</button></div>
+          <div id="home-sea-map" class="sea-map" aria-label="내 주변 바다 선택 지도"></div>
+          <p class="map-help">바다 위를 누르면 해당 위치의 위험 정보를 볼 수 있습니다.</p>
         </section>
 
         <section id="alerts" class="screen">
           <div class="page-intro"><p class="eyebrow">LIVE MONITORING</p><h1>바다 위험 알림</h1><p>지역별 고수온·적조 위험도를 확인해요.</p></div>
-          <label class="location-chip">⌖ <select id="sea-location"><option value="gijang">기장군 일광면</option><option value="dadaepo">다대포</option><option value="yeongdo">영도</option></select></label>
-          <section class="risk-banner"><div class="risk-ring">!</div><div><p>고수온 주의 단계</p><h2>오늘 오후 가장 높아요</h2><small>14:00–17:00 · 수온 28°C 예상</small></div></section>
-          <div class="temperature-chart"><div class="chart-title"><b>해수면 온도 추이</b><span>최근 7일</span></div><div class="chart-area"><div class="grid"></div><svg viewBox="0 0 330 105" preserveAspectRatio="none"><path d="M0,81 C28,74 32,86 58,65 S88,72 111,51 S144,63 168,43 S198,53 219,27 S252,43 278,14 S306,32 330,9" fill="none" stroke="#ff7d51" stroke-width="4" stroke-linecap="round"/></svg><div class="chart-labels"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>오늘</span></div></div></div>
+          <div class="location-chip">⌖ <b id="alerts-location-label">지도에서 선택한 바다 위치</b></div>
+          <div id="alerts-sea-map" class="sea-map alert-sea-map" aria-label="선택한 바다 위치 지도"></div>
+          <section class="risk-banner"><div class="risk-ring">!</div><div><p>고수온 위험 분석</p><h2 id="alerts-risk-title">공식 수온 관측 대기 중</h2><small id="alerts-temp-detail">선택 위치에 가까운 관측값을 확인합니다.</small></div></section>
+          <div class="temperature-chart"><div class="chart-title"><b>해수면 온도 추이</b><span id="chart-current-temp">최근 7일 · 관측 대기</span></div><div class="chart-area"><div class="temp-axis"><span id="temp-axis-high">30°C</span><span id="temp-axis-mid">25°C</span><span id="temp-axis-low">20°C</span></div><div class="grid"></div><svg viewBox="0 0 330 105" preserveAspectRatio="none"><path d="M0,81 C28,74 32,86 58,65 S88,72 111,51 S144,63 168,43 S198,53 219,27 S252,43 278,14 S306,32 330,9" fill="none" stroke="#ff7d51" stroke-width="4" stroke-linecap="round"/></svg><div class="chart-labels"><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>오늘</span></div></div></div>
           <section class="alert-list"><h2>현재 알림 <em>3</em></h2><article><span class="badge orange">주의</span><div><b>고수온 주의보 발령</b><p>기장군 일광면 해역 · 10분 전</p></div><span>›</span></article><article><span class="badge pink">관심</span><div><b>적조 예비 주의</b><p>기장군 연화리 해역 · 1시간 전</p></div><span>›</span></article></section>
         </section>
 
