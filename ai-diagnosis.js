@@ -2,15 +2,15 @@ let modelsPromise;
 const diagnosisCache = new Map();
 async function loadModels() {
   if (!modelsPromise) modelsPromise = (async () => {
-    const [{ initializeApp, getApps, getApp }, { initializeAppCheck, ReCaptchaEnterpriseProvider }, { getAI, getGenerativeModel, GoogleAIBackend }, { firebaseConfig }] = await Promise.all([
+    const [{ initializeApp, getApps, getApp }, { initializeAppCheck, ReCaptchaV3Provider }, { getAI, getGenerativeModel, GoogleAIBackend }, { firebaseConfig }] = await Promise.all([
       import('https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js'),
       import('https://www.gstatic.com/firebasejs/12.1.0/firebase-app-check.js'),
       import('https://www.gstatic.com/firebasejs/12.1.0/firebase-ai.js'),
-      import('./firebase-config.js')
+      import('./firebase-config.js?v=ocean-breath-16114')
     ]);
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     initializeAppCheck(app, {
-      provider: new ReCaptchaEnterpriseProvider('6LdYUXktAAAAAGL52Ts9B8YNm8UkiqyWfFHhWwt7'),
+      provider: new ReCaptchaV3Provider('6LcOc3ktAAAAAO9NGAyOGwrbt06tSbMBz3tSODdY'),
       isTokenAutoRefreshEnabled: true
     });
     const ai = getAI(app, { backend: new GoogleAIBackend() });
