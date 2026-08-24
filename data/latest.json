@@ -1,12 +1,12 @@
 {
   "source": "Open-Meteo Marine 보조자료",
   "primarySource": "기상청 해양종합관측자료",
-  "primaryStatus": "기상청 연결 지연: 응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD",
+  "primaryStatus": "기상청 연결 지연: HTTP 504",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-08-24T15:05:43.858716+09:00",
-  "observedAt": "2026-08-24T15:00",
-  "temperature": 29.3,
-  "waveHeight": 0.44,
+  "updatedAt": "2026-08-24T17:31:48.392240+09:00",
+  "observedAt": "2026-08-24T17:30",
+  "temperature": 29.1,
+  "waveHeight": 0.42,
   "history": [
     {
       "date": "2026-08-18",
@@ -40,11 +40,11 @@
   "redTide": {
     "source": "국립수산과학원 적조정보",
     "level": "발생 정보",
-    "message": "경남 거제 · Cochlodinium polykrikoides · 최대 0개체/mL",
+    "message": "경남 통영 · Cochlodinium polykrikoides · 최대 48.4개체/mL",
     "reportedAt": null,
-    "area": "경남 거제",
+    "area": "경남 통영",
     "species": "Cochlodinium polykrikoides",
-    "maxDensity": 0.0
+    "maxDensity": 48.4
   },
   "status": "실제 해양 보조자료 수집 완료"
 }
