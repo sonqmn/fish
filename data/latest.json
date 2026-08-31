@@ -3,10 +3,10 @@
   "primarySource": "기상청 해양종합관측자료",
   "primaryStatus": "기상청 연결 지연: <urlopen error timed out>",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-08-31T10:23:55.955877+09:00",
-  "observedAt": "2026-08-31T10:15",
+  "updatedAt": "2026-08-31T11:23:31.494038+09:00",
+  "observedAt": "2026-08-31T11:15",
   "temperature": 27.2,
-  "waveHeight": 0.58,
+  "waveHeight": 0.6,
   "history": [
     {
       "date": "2026-08-25",
