@@ -1,10 +1,10 @@
 {
   "source": "Open-Meteo Marine 보조자료",
   "primarySource": "기상청 해양종합관측자료",
-  "primaryStatus": "기상청 연결 지연: <urlopen error timed out>",
+  "primaryStatus": "기상청 연결 지연: 응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-08-31T14:23:27.147633+09:00",
-  "observedAt": "2026-08-31T14:15",
+  "updatedAt": "2026-08-31T15:22:09.709571+09:00",
+  "observedAt": "2026-08-31T15:15",
   "temperature": 27.3,
   "waveHeight": 0.62,
   "history": [
