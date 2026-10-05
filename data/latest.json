@@ -1,17 +1,13 @@
 {
   "source": "Open-Meteo Marine 보조자료",
   "primarySource": "기상청 해양종합관측자료",
-  "primaryStatus": "기상청 연결 지연: 응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD",
+  "primaryStatus": "기상청 연결 지연: HTTP 504",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-10-05T16:04:33.126398+09:00",
-  "observedAt": "2026-10-05T16:00",
-  "temperature": 24.3,
+  "updatedAt": "2026-10-06T01:02:47.963179+09:00",
+  "observedAt": "2026-10-06T01:00",
+  "temperature": 24.0,
   "waveHeight": 0.48,
   "history": [
-    {
-      "date": "2026-09-29",
-      "temperature": 25.1
-    },
     {
       "date": "2026-09-30",
       "temperature": 25.0
@@ -34,7 +30,11 @@
     },
     {
       "date": "2026-10-05",
-      "temperature": 24.2
+      "temperature": 24.3
+    },
+    {
+      "date": "2026-10-06",
+      "temperature": 24.0
     }
   ],
   "redTide": {
