@@ -3,10 +3,10 @@
   "primarySource": "기상청 해양종합관측자료",
   "primaryStatus": "기상청 연결 지연: HTTP 504",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-10-15T05:44:30.704693+09:00",
-  "observedAt": "2026-10-15T05:30",
+  "updatedAt": "2026-10-15T08:56:21.173056+09:00",
+  "observedAt": "2026-10-15T08:45",
   "temperature": 23.3,
-  "waveHeight": 0.78,
+  "waveHeight": 0.68,
   "history": [
     {
       "date": "2026-10-09",
