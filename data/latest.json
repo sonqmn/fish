@@ -3,10 +3,10 @@
   "primarySource": "기상청 해양종합관측자료",
   "primaryStatus": "기상청 연결 지연: 응답에서 수온 항목을 찾지 못했습니다: #START7777 #            TM       STN                   STN           LON           LAT     WH   WD",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-10-17T13:29:19.573761+09:00",
-  "observedAt": "2026-10-17T13:15",
+  "updatedAt": "2026-10-17T18:23:21.096654+09:00",
+  "observedAt": "2026-10-17T18:15",
   "temperature": 22.7,
-  "waveHeight": 0.8,
+  "waveHeight": 1.04,
   "history": [
     {
       "date": "2026-10-11",
