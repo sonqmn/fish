@@ -1,12 +1,12 @@
 {
   "source": "Open-Meteo Marine 보조자료",
   "primarySource": "기상청 해양종합관측자료",
-  "primaryStatus": "기상청 연결 지연: <urlopen error timed out>",
+  "primaryStatus": "기상청 연결 지연: HTTP 504",
   "station": "기장 앞바다 해양 격자",
-  "updatedAt": "2026-10-18T14:57:15.111415+09:00",
-  "observedAt": "2026-10-18T14:45",
-  "temperature": 22.6,
-  "waveHeight": 1.5,
+  "updatedAt": "2026-10-18T20:08:53.121113+09:00",
+  "observedAt": "2026-10-18T20:00",
+  "temperature": 22.4,
+  "waveHeight": 1.6,
   "history": [
     {
       "date": "2026-10-12",
